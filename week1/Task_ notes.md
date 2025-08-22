@@ -148,3 +148,5 @@
 5. **CTEs (Common Table Expressions):** Temporary result sets for complex queries.
 6. **Window Functions:** `ROW_NUMBER()`, `RANK()`, `SUM() OVER()` for advanced analytics.
 7. **Views & Indexes:** Improve query readability and performance.
+
+ ## Muhammad Shah Zaman Jalil
