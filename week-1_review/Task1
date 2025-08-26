@@ -1,0 +1,219 @@
+create table customer(
+	customer_id serial primary key,
+	name varchar(50),
+	email varchar(50) unique not null,
+	created_at timestamp default now()
+);
+
+create table product(
+	product_id serial primary key,
+	name varchar(50) not null,
+	category varchar(50),
+	price numeric(10,2) check (price>0)
+);
+
+create table orders (
+    order_id serial primary key,
+    customer_id int references customer(customer_id),
+    product_id int references product(product_id),
+    quantity int CHECK (quantity > 0),
+    order_date timestamp default NOW()
+);
+
+
+insert into customer(name, email)
+values 
+('Muhammad Ali', 'mali@gmail.com'),
+('Abbas Zaidi', 'abbas@outlook.com'),
+('Ahmed Raza', 'ahmed.raza@gmail.com'),
+('Sana Tariq', 'sana.tariq@gmail.com'),
+('Bilal Hussain', 'bilal.hussain@gmail.com'),
+('Zainab Ali', 'zainab.ali@gmail.com'),
+('Hassan Iqbal', 'hassan.iqbal@gmail.com'),
+('Fatima Noor', 'fatima.noor@gmail.com'),
+('Usman Khalid', 'usman.khalid@gmail.com'),
+('Laiba Sheikh', 'laiba.sheikh@gmail.com');
+
+insert into product(name, category, price)
+values
+('Laptop', 'electronics', 98000.00),
+('smartphone', 'electronics', 50000.00),
+('desk chair', 'furniture', 5500.00),
+('water bottle', 'kitchen', 80.00),
+('notebook', 'stationery', 250.50);
+
+
+insert into orders(customer_id, product_id, quantity)
+values
+(1, 1, 2),
+(1, 2, 1),
+(1, 3, 1),      
+(2, 3, 1),
+(2, 4, 3),
+(3, 5, 5),
+(3, 1, 1),
+(3, 2, 2),   
+(4, 2, 2),
+(4, 3, 1),
+(5, 4, 2),
+(5, 5, 3),
+(6, 1, 1),
+(6, 2, 1),
+(7, 3, 2),
+(7, 4, 1),
+(8, 5, 2),
+(8, 1, 3),
+(8, 4, 1),      
+(9, 2, 1),
+(9, 3, 1),
+(10, 4, 2),
+(10, 5, 1);
+
+--List all customers who ordered more than 2 different products.
+select customer_id, count(distinct product_id) as product_ordered
+from orders
+group by customer_id
+having count(distinct product_id) > 2;
+
+--Find the top 3 most ordered products by quantity.
+select p.product_id, p.name, sum(o.quantity) as total_quantity
+from orders o
+join product p on o.product_id = p.product_id
+group by p.product_id, p.name
+order by total_quantity desc
+limit 3;
+
+--Show each customer’s total spending amount (sum of price × quantity).
+select c.customer_id, c.name, sum(p.price * o.quantity) as total_spending
+from orders o
+join product p on o.product_id = p.product_id
+join customer c on o.customer_id = c.customer_id
+group by c.customer_id, c.name
+order by total_spending desc;
+
+--Find customers who never placed an order.
+select customer_id, name
+from customer
+where customer_id not in (select distinct customer_id from orders);
+
+--List products that no one has ordered yet.
+select p.product_id, p.name
+from product p
+left join orders o on p.product_id = o.product_id
+where o.order_id is null;
+
+--Show the latest order date per customer.
+select c.customer_id, c.name, max(o.order_date) as latest_order_date
+from orders o
+join customer c on c.customer_id = o.customer_id
+group by c.customer_id, c.name
+order by latest_order_date desc;
+
+--Create a view called customer_spend_summary that shows each customer and their total spend.
+create view customer_spend_summary as
+select c.customer_id, 
+       c.name, 
+       sum(p.price * o.quantity) as total_spend
+from orders o
+join product p on o.product_id = p.product_id
+join customer c on o.customer_id = c.customer_id
+group by c.customer_id, c.name;
+
+--Create an index on orders.customer_id and explain in 2–3 lines why indexing helps here.
+create index idx_orders_customer_id
+on orders(customer_id);
+
+--Using a CTE, show the top 2 customers by spending in each product category.
+--(Hint: CTE for spend per customer per category, then use ROW_NUMBER() with partition by category.)
+with spend_per_customer as (
+    select 
+        c.customer_id,
+        c.name,
+        p.category,
+        sum(p.price * o.quantity) as total_spend,
+        row_number() over (
+            partition by p.category 
+            order by sum(p.price * o.quantity) desc
+        ) as rn
+    from orders o
+    join product p on o.product_id = p.product_id
+    join customer c on o.customer_id = c.customer_id
+    group by c.customer_id, c.name, p.category
+)
+-- Select only top 2 spenders from each category
+select customer_id, name, category, total_spend
+from spend_per_customer
+where rn <= 2
+order by category, total_spend desc;
+
+
+
+--Using a CTE, calculate the monthly sales trend (total revenue per month).
+with monthly_sales as (
+    select 
+        date_trunc('month', o.order_date)::date as month,
+        sum(p.price * o.quantity) as total_revenue
+    from orders o
+    join product p on o.product_id = p.product_id
+    group by date_trunc('month', o.order_date)
+)
+select month, total_revenue
+from monthly_sales
+order by month;
+
+--For each customer, rank their orders by order_date (most recent = rank 1).
+select 
+    o.order_id,
+    o.customer_id,
+    c.name,
+    o.order_date,
+    rank() over (
+        partition by o.customer_id 
+        order by o.order_date desc
+    ) as order_rank
+from orders o
+join customer c on o.customer_id = c.customer_id
+order by o.customer_id, order_rank;
+
+--Show each customer’s cumulative spending over time (use SUM() OVER (PARTITION BY customer_id ORDER BY order_date)).
+select 
+    o.order_id,
+    c.customer_id,
+    c.name,
+    o.order_date,
+    (p.price * o.quantity) as order_amount,
+    sum(p.price * o.quantity) over (
+        partition by c.customer_id
+        order by o.order_date
+    ) as cumulative_spending
+from orders o
+join product p on o.product_id = p.product_id
+join customer c on o.customer_id = c.customer_id
+order by c.customer_id, o.order_date;
+
+--Find the product that generated the highest revenue in its category,
+--using RANK() OVER (PARTITION BY category ORDER BY SUM(price*quantity) DESC
+
+with product_revenue as (
+    select 
+        p.category,
+        p.product_id,
+        p.name as product_name,
+        sum(p.price * o.quantity) as total_revenue,
+        rank() over (
+            partition by p.category 
+            order by sum(p.price * o.quantity) desc
+        ) as revenue_rank
+    from orders o
+    join product p on o.product_id = p.product_id
+    group by p.category, p.product_id, p.name
+)
+select category, product_id, product_name, total_revenue
+from product_revenue
+where revenue_rank = 1;
+
+
+
+
+
+	

@@ -1,0 +1,10 @@
+In this project, I learned how to design relational tables, insert sample data, and write advanced SQL queries. 
+I practiced important SQL concepts such as aggregations, joins, window functions, views, indexes, and CTEs.
+
+The most interesting part was using window functions (RANK, ROW_NUMBER, SUM OVER) to calculate rankings and cumulative values, 
+because they allow solving complex analytical problems efficiently.
+
+The hardest part was writing queries with CTEs and window functions, since it requires careful use of PARTITION BY and ORDER BY. 
+Once understood, it became clear how powerful they are for real-world analytics.
+
+This assignment improved my confidence in SQL analytics, data modeling, and optimization techniques.
