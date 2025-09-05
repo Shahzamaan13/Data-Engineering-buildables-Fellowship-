@@ -1,0 +1,27 @@
+Difference between OLTP and OLAP modeling:
+
+OLTP (Online Transaction Processing):
+
+Used for day-to-day operations, like inserting, updating, deleting transactions.
+
+Focused on speed and accuracy of transactions.
+
+Highly normalized schema to avoid data redundancy.
+
+OLAP (Online Analytical Processing):
+
+Used for analysis and reporting, like revenue trends, top customers.
+
+Focused on query performance and aggregations.
+
+Often uses star or snowflake schemas with denormalized dimensions.
+
+Why surrogate keys are important in dimensions:
+
+Surrogate keys are system-generated unique IDs (like customer_sk) instead of using natural/business keys.
+
+Important for SCD Type-2 to track history, because same customer may have multiple records over time.
+
+Surrogate keys ensure stable, unique, numeric identifiers that do not change when business data changes.
+
+Helps in joining fact and dimension tables efficiently.
