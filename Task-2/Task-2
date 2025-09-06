@@ -1,0 +1,164 @@
+create table dim_customers(
+	customer_sk serial primary key ,
+	customer_id int not null,
+	name varchar(50),
+	email varchar(60),
+	effective_date date not null,
+	end_date date,
+	is_active char(1) check (is_active in ('Y','N'))
+);
+
+create table dim_products(
+	product_sk serial primary key ,
+	product_id int not null,
+	name varchar(50),
+	category varchar(50)
+);
+
+create table dim_date(
+	date_sk date primary key,
+	full_date date not null,
+	year int,
+	month int ,
+	day_of_week varchar(10)
+	
+);
+
+create table fact_orders(
+	order_id serial primary key,
+	order_date_sk date,
+	customer_sk int,
+	product_sk int,
+	quantity int,
+	price numeric(10,2),
+	total_amount numeric(10,2),
+	foreign key (order_date_sk) references dim_date(date_sk),
+	foreign key (customer_sk) references dim_customers(customer_sk),
+	foreign key (product_sk) references dim_products(product_sk)
+);
+
+
+insert into dim_customers 
+values
+(101,'Hamza','hamzakhan101@hotmail.com',date '9-3-2025',null,'Y'),
+(102, 'Ali', 'ali.khan@gmail.com', date '2025-03-08', NULL, 'Y'),
+(103, 'Sana', 'sana.bibi@yahoo.com', date '2025-03-05',  '2025-03-10', 'N'),
+(104, 'Usman', 'usman123@gmail.com', date '2025-03-01', NULL, 'Y'),
+(105, 'Ayesha', 'ayesha.malik@hotmail.com', date '2025-02-25', DATE '2025-03-05', 'N');
+
+select * from dim_customers ;
+
+insert into dim_products (product_id, name, category)
+values
+(1, 'Laptop', 'Electronics'),
+(2, 'Mobile', 'Electronics'),
+(3, 'Shirt', 'Clothing'),
+(4, 'Jeans', 'Clothing'),
+(5, 'Microwave', 'Home Appliances');
+
+select * from dim_products;
+
+insert into dim_date (date_sk, full_date, year, month, day_of_week)
+values
+(DATE '2025-03-01', DATE '2025-03-01', 2025, 3, 'Saturday'),
+(DATE '2025-03-02', DATE '2025-03-02', 2025, 3, 'Sunday'),
+(DATE '2025-03-03', DATE '2025-03-03', 2025, 3, 'Monday'),
+(DATE '2025-03-04', DATE '2025-03-04', 2025, 3, 'Tuesday'),
+(DATE '2025-03-05', DATE '2025-03-05', 2025, 3, 'Wednesday');
+
+
+select * from dim_date;
+
+insert into fact_orders
+(order_date_sk, customer_sk, product_sk, quantity, price, total_amount)
+values
+(DATE '2025-03-01', 1, 1, 1, 800, 800),
+(DATE '2025-03-01', 2, 2, 2, 500, 1000),
+(DATE '2025-03-02', 3, 3, 3, 30, 90),
+(DATE '2025-03-02', 4, 4, 2, 40, 80),
+(DATE '2025-03-03', 5, 5, 1, 150, 150),
+(DATE '2025-03-03', 1, 2, 1, 500, 500),
+(DATE '2025-03-04', 2, 3, 2, 30, 60),
+(DATE '2025-03-04', 3, 4, 1, 40, 40),
+(DATE '2025-03-05', 4, 5, 2, 150, 300),
+(DATE '2025-03-05', 5, 1, 1, 800, 800);
+
+select * from fact_orders;
+
+
+update dim_customers
+set end_date = date '2025-03-15', is_active='N'
+where customer_id = 102 and is_active='Y';
+
+insert into dim_customers 
+(customer_id, name, email, effective_date, end_date, is_active)
+values
+(102,'Zaman','zaman@yahoo.com',date '2025-04-12',null,'Y')
+
+select * from dim_customers;
+
+--1. Show total revenue per product category.
+select 
+    p.category,
+    sum(f.total_amount) as total_revenue
+from fact_orders f
+join dim_products p
+on f.product_sk = p.product_sk
+group by p.category
+order by total_revenue desc;
+
+--show monthly revenue trend (use dim_date).
+select 
+    d.year,
+    d.month,
+    sum(f.total_amount) as monthly_revenue
+from fact_orders f
+join dim_date d
+on f.order_date_sk = d.date_sk
+group by d.year, d.month
+order by d.year, d.month;
+--Find customers whose information changed over time (SCD-2 history).
+select 
+    customer_id,name,email,effective_date,end_date,is_active
+from dim_customers
+where end_date is not null
+order by customer_id, effective_date;
+
+--Using a CTE, find the top 2 customers by total spend in each month.
+with monthly_customer_spend as (
+    select 
+        f.customer_sk,
+        d.year,
+        d.month,
+        sum(f.total_amount) as total_spent,
+        row_number() over (partition by d.year, d.month order by sum(f.total_amount) desc) as rn
+    from fact_orders f
+    join dim_date d
+    on f.order_date_sk = d.date_sk
+    group by f.customer_sk, d.year, d.month
+)
+select 
+    mcs.year,
+    mcs.month,
+    mcs.customer_sk,
+    c.name,
+    mcs.total_spent
+from monthly_customer_spend mcs
+join dim_customers c
+on mcs.customer_sk = c.customer_sk
+where mcs.rn <= 2
+order by mcs.year, mcs.month, mcs.total_spent desc;
+
+--Using a window function, show each customer’s order rank by date.
+select 
+    f.customer_sk,
+    c.name,
+    f.order_id,
+    f.order_date_sk,
+    f.total_amount,
+    row_number() over (partition by f.customer_sk order by f.order_date_sk) as order_rank
+from fact_orders f
+join dim_customers c
+on f.customer_sk = c.customer_sk
+order by f.customer_sk, order_rank;
+
