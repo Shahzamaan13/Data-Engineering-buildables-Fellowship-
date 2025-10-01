@@ -1,0 +1,9 @@
+In this PS5 Games dimension, we used a row-level hash (md5) to detect changes in the data instead of relying on timestamps. The hash is calculated based on all attributes of a record (like title, genre, developer, price, and PS Plus status). Using a row hash helps to:
+
+Detect any change precisely – Even a small update in any column will produce a different hash, ensuring we capture all modifications.
+
+Simplify comparison – Instead of checking each column individually, we just compare hashes between staging and main tables.
+
+Support SCD-2 logic – When a change is detected (hash differs), we can close the old record and insert a new version with a new surrogate key and updated data.
+
+If we had a column like lastUpdateDate in both staging and main tables, we might not need to calculate a row hash because we could rely on the timestamp to detect changes. However, row hashes are still safer because timestamps can sometimes be inconsistent or missing, while hashes guarantee an exact comparison of the data values themselves.
