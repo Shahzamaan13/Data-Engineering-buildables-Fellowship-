@@ -1,0 +1,7 @@
+
+dask
+pandas
+sqlalchemy
+psycopg2
+pyarrow
+polars

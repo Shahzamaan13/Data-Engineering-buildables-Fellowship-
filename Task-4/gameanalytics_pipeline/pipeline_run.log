@@ -1,0 +1,116 @@
+2025-10-05 16:25:46,809 - INFO - Starting step: Extract Files
+2025-10-05 16:25:46,810 - INFO - Extracting CSV files...
+2025-10-05 16:25:46,824 - ERROR - Extract Files - FAILED: An error occurred while calling the read_csv method registered to the pandas backend.
+Original Message: data/raw/*.csv resolved to no files
+2025-10-05 16:25:56,482 - INFO - Starting step: Extract Files
+2025-10-05 16:25:56,483 - INFO - Extracting CSV files...
+2025-10-05 16:25:56,493 - ERROR - Extract Files - FAILED: An error occurred while calling the read_csv method registered to the pandas backend.
+Original Message: data/raw/*.csv resolved to no files
+2025-10-05 21:19:26,319 - INFO - Starting step: Extract Files
+2025-10-05 21:19:26,321 - INFO - Extracting CSV files...
+2025-10-05 21:19:26,751 - INFO - Files extracted successfully.
+2025-10-05 21:19:26,751 - INFO - Extract Files - SUCCESS
+2025-10-05 21:19:26,751 - INFO - Starting step: Clean & Transform
+2025-10-05 21:19:26,751 - INFO - Transforming data...
+2025-10-05 21:19:26,807 - ERROR - Clean & Transform - FAILED: 'console'
+2025-10-05 21:25:09,780 - INFO - Starting step: Extract Files
+2025-10-05 21:25:09,780 - INFO - Extracting CSV files...
+2025-10-05 21:25:10,201 - INFO - Files extracted successfully.
+2025-10-05 21:25:10,202 - INFO - Extract Files - SUCCESS
+2025-10-05 21:25:10,202 - INFO - Starting step: Clean & Transform
+2025-10-05 21:25:10,202 - INFO - Transforming data...
+2025-10-05 21:25:10,727 - INFO - Transformation completed successfully.
+2025-10-05 21:25:10,728 - INFO - Clean & Transform - SUCCESS
+2025-10-05 21:25:10,728 - INFO - Starting step: Validate Data
+2025-10-05 21:25:10,728 - INFO - Validating data...
+2025-10-05 21:25:10,831 - INFO - Validation complete.
+2025-10-05 21:25:10,832 - INFO - Validate Data - SUCCESS
+2025-10-05 21:25:10,832 - INFO - Starting step: Load to DB
+2025-10-05 21:25:10,832 - INFO - Loading to PostgreSQL...
+2025-10-05 21:25:12,494 - ERROR - Load to DB - FAILED: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "username"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-10-05 21:32:13,571 - INFO - Starting step: Extract Files
+2025-10-05 21:32:13,571 - INFO - Extracting CSV files...
+2025-10-05 21:32:13,864 - INFO - Files extracted successfully.
+2025-10-05 21:32:13,864 - INFO - Extract Files - SUCCESS
+2025-10-05 21:32:13,865 - INFO - Starting step: Clean & Transform
+2025-10-05 21:32:13,865 - INFO - Transforming data...
+2025-10-05 21:32:14,301 - INFO - Transformation completed successfully.
+2025-10-05 21:32:14,302 - INFO - Clean & Transform - SUCCESS
+2025-10-05 21:32:14,302 - INFO - Starting step: Validate Data
+2025-10-05 21:32:14,302 - INFO - Validating data...
+2025-10-05 21:32:14,359 - INFO - Validation complete.
+2025-10-05 21:32:14,360 - INFO - Validate Data - SUCCESS
+2025-10-05 21:32:14,360 - INFO - Starting step: Load to DB
+2025-10-05 21:32:14,361 - INFO - Loading to PostgreSQL...
+2025-10-05 21:32:14,780 - ERROR - Load to DB - FAILED: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "admin"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-10-05 21:37:31,607 - INFO - Starting step: Extract Files
+2025-10-05 21:37:31,607 - INFO - Extracting CSV files...
+2025-10-05 21:37:31,899 - INFO - Files extracted successfully.
+2025-10-05 21:37:31,899 - INFO - Extract Files - SUCCESS
+2025-10-05 21:37:31,899 - INFO - Starting step: Clean & Transform
+2025-10-05 21:37:31,900 - INFO - Transforming data...
+2025-10-05 21:37:32,557 - INFO - Transformation completed successfully.
+2025-10-05 21:37:32,558 - INFO - Clean & Transform - SUCCESS
+2025-10-05 21:37:32,558 - INFO - Starting step: Validate Data
+2025-10-05 21:37:32,558 - INFO - Validating data...
+2025-10-05 21:37:32,608 - INFO - Validation complete.
+2025-10-05 21:37:32,609 - INFO - Validate Data - SUCCESS
+2025-10-05 21:37:32,609 - INFO - Starting step: Load to DB
+2025-10-05 21:37:32,609 - INFO - Loading to PostgreSQL...
+2025-10-05 21:37:32,986 - ERROR - Load to DB - FAILED: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "admin"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-10-05 21:38:22,941 - INFO - Starting step: Extract Files
+2025-10-05 21:38:22,941 - INFO - Extracting CSV files...
+2025-10-05 21:38:23,217 - INFO - Files extracted successfully.
+2025-10-05 21:38:23,217 - INFO - Extract Files - SUCCESS
+2025-10-05 21:38:23,217 - INFO - Starting step: Clean & Transform
+2025-10-05 21:38:23,217 - INFO - Transforming data...
+2025-10-05 21:38:23,567 - INFO - Transformation completed successfully.
+2025-10-05 21:38:23,568 - INFO - Clean & Transform - SUCCESS
+2025-10-05 21:38:23,568 - INFO - Starting step: Validate Data
+2025-10-05 21:38:23,568 - INFO - Validating data...
+2025-10-05 21:38:23,593 - INFO - Validation complete.
+2025-10-05 21:38:23,593 - INFO - Validate Data - SUCCESS
+2025-10-05 21:38:23,593 - INFO - Starting step: Load to DB
+2025-10-05 21:38:23,593 - INFO - Loading to PostgreSQL...
+2025-10-05 21:38:23,858 - ERROR - Load to DB - FAILED: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "admin"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-10-05 21:40:48,026 - INFO - Starting step: Extract Files
+2025-10-05 21:40:48,026 - INFO - Extracting CSV files...
+2025-10-05 21:40:48,316 - INFO - Files extracted successfully.
+2025-10-05 21:40:48,317 - INFO - Extract Files - SUCCESS
+2025-10-05 21:40:48,317 - INFO - Starting step: Clean & Transform
+2025-10-05 21:40:48,317 - INFO - Transforming data...
+2025-10-05 21:40:48,726 - INFO - Transformation completed successfully.
+2025-10-05 21:40:48,727 - INFO - Clean & Transform - SUCCESS
+2025-10-05 21:40:48,727 - INFO - Starting step: Validate Data
+2025-10-05 21:40:48,727 - INFO - Validating data...
+2025-10-05 21:40:48,760 - INFO - Validation complete.
+2025-10-05 21:40:48,760 - INFO - Validate Data - SUCCESS
+2025-10-05 21:40:48,760 - INFO - Starting step: Load to DB
+2025-10-05 21:40:48,760 - INFO - Loading to PostgreSQL...
+2025-10-05 21:40:49,038 - ERROR - Load to DB - FAILED: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "admin"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-10-05 21:46:46,492 - INFO - Starting step: Extract Files
+2025-10-05 21:46:46,493 - INFO - Extracting CSV files...
+2025-10-05 21:46:46,797 - INFO - Files extracted successfully.
+2025-10-05 21:46:46,798 - INFO - Extract Files - SUCCESS
+2025-10-05 21:46:46,798 - INFO - Starting step: Clean & Transform
+2025-10-05 21:46:46,798 - INFO - Transforming data...
+2025-10-05 21:46:47,180 - INFO - Transformation completed successfully.
+2025-10-05 21:46:47,180 - INFO - Clean & Transform - SUCCESS
+2025-10-05 21:46:47,180 - INFO - Starting step: Validate Data
+2025-10-05 21:46:47,180 - INFO - Validating data...
+2025-10-05 21:46:47,203 - INFO - Validation complete.
+2025-10-05 21:46:47,203 - INFO - Validate Data - SUCCESS
+2025-10-05 21:46:47,203 - INFO - Starting step: Load to DB
+2025-10-05 21:46:47,203 - INFO - Loading to PostgreSQL...
+2025-10-05 21:46:47,534 - INFO - Load completed successfully.
+2025-10-05 21:46:47,535 - INFO - Load to DB - SUCCESS
